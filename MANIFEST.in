@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include siyar_erpnext *.css
+recursive-include siyar_erpnext *.csv
+recursive-include siyar_erpnext *.html
+recursive-include siyar_erpnext *.ico
+recursive-include siyar_erpnext *.js
+recursive-include siyar_erpnext *.json
+recursive-include siyar_erpnext *.md
+recursive-include siyar_erpnext *.png
+recursive-include siyar_erpnext *.py
+recursive-include siyar_erpnext *.svg
+recursive-include siyar_erpnext *.txt
+recursive-exclude siyar_erpnext *.pyc
