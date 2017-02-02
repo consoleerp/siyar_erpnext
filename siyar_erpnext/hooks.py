@@ -118,4 +118,6 @@ app_license = "MIT"
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "siyar_erpnext.event.get_events"
 # }
-
+fixtures = [
+	{"dt" : "Custom Field", "filters" : [["name", "in", ['Item Customer Detail-consolererp_discpercent']]]}, 
+	"Custom Script"]
