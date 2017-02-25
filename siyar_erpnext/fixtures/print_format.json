@@ -1,0 +1,22 @@
+[
+ {
+  "align_labels_left": 0, 
+  "css": null, 
+  "custom_format": 0, 
+  "disabled": 0, 
+  "doc_type": "Sales Invoice", 
+  "docstatus": 0, 
+  "doctype": "Print Format", 
+  "font": "Default", 
+  "format_data": "[{\"fieldname\": \"print_heading_template\", \"fieldtype\": \"Custom HTML\", \"options\": \"<div class=\\\"print-heading\\\">\\t\\t\\t\\t<h2>Sales Invoice<br><small>{{ doc.name }}</small>\\t\\t\\t\\t</h2></div>\"}, {\"fieldtype\": \"Section Break\", \"label\": \"\"}, {\"fieldtype\": \"Column Break\"}, {\"print_hide\": 0, \"fieldname\": \"customer_name\", \"label\": \"Customer Name\"}, {\"print_hide\": 0, \"fieldname\": \"offline_pos_name\", \"label\": \"Offline POS Name\"}, {\"fieldtype\": \"Column Break\"}, {\"print_hide\": 0, \"fieldname\": \"posting_date\", \"label\": \"Date\"}, {\"print_hide\": 0, \"fieldname\": \"due_date\", \"label\": \"Payment Due Date\"}, {\"print_hide\": 0, \"fieldname\": \"project\", \"label\": \"Project\"}, {\"fieldtype\": \"Section Break\", \"label\": \"Address\"}, {\"fieldtype\": \"Column Break\"}, {\"print_hide\": 0, \"fieldname\": \"address_display\", \"label\": \"Address\"}, {\"print_hide\": 0, \"fieldname\": \"contact_display\", \"label\": \"Contact\"}, {\"print_hide\": 0, \"fieldname\": \"contact_mobile\", \"label\": \"Mobile No\"}, {\"fieldtype\": \"Column Break\"}, {\"print_hide\": 0, \"fieldname\": \"territory\", \"label\": \"Territory\"}, {\"fieldtype\": \"Section Break\", \"label\": \"\"}, {\"fieldtype\": \"Column Break\"}, {\"visible_columns\": [{\"print_hide\": 0, \"fieldname\": \"item_code\", \"print_width\": \"\"}, {\"print_hide\": 0, \"fieldname\": \"description\", \"print_width\": \"200px\"}, {\"print_hide\": 0, \"fieldname\": \"image\", \"print_width\": \"\"}, {\"print_hide\": 0, \"fieldname\": \"qty\", \"print_width\": \"\"}, {\"print_hide\": 0, \"fieldname\": \"stock_uom\", \"print_width\": \"\"}, {\"print_hide\": 0, \"fieldname\": \"consoleerp_customer_rate\", \"print_width\": \"\"}, {\"print_hide\": 0, \"fieldname\": \"consoleerp_customer_disc_percent\", \"print_width\": \"\"}], \"print_hide\": 0, \"fieldname\": \"items\", \"label\": \"Items\"}, {\"fieldtype\": \"Section Break\", \"label\": \"\"}, {\"fieldtype\": \"Column Break\"}, {\"fieldtype\": \"Column Break\"}, {\"print_hide\": 0, \"fieldname\": \"consoleerp_customer_rate_total\", \"align\": \"right\", \"label\": \"Amount\"}, {\"print_hide\": 0, \"fieldname\": \"consoleerp_customer_discount_total\", \"align\": \"right\", \"label\": \"Discount\"}, {\"print_hide\": 0, \"fieldname\": \"consoleerp_customer_order_total\", \"align\": \"right\", \"label\": \"Total\"}]", 
+  "html": null, 
+  "line_breaks": 0, 
+  "modified": "2017-02-25 19:02:03.877505", 
+  "module": "Accounts", 
+  "name": "Sales Order Price", 
+  "print_format_builder": 1, 
+  "print_format_type": "Server", 
+  "show_section_headings": 0, 
+  "standard": "No"
+ }
+]

@@ -119,5 +119,15 @@ app_license = "MIT"
 # 	"frappe.desk.doctype.event.event.get_events": "siyar_erpnext.event.get_events"
 # }
 fixtures = [
-	{"dt" : "Custom Field", "filters" : [["name", "in", ['Item Customer Detail-consoleerp_discpercent']]]}, 
-	"Custom Script"]
+	{"dt" : "Custom Field", "filters" : [["name", "in", [
+		"Sales Invoice-consoleerp_customer_order_total",
+		"Sales Invoice-consoleerp_customer_discount_total",
+		"Sales Invoice-consoleerp_customer_rate_total",
+		"Sales Invoice-customer_original_rate_details",
+		"Sales Invoice Item-consoleerp_customer_disc_percent",
+		"Sales Invoice Item-consoleerp_customer_rate",
+		"Item Group-consoleerp_custgroup_discount"		
+]]]}, 
+	
+	{"dt" : "Print Format", "filters" : [["name", "in", ["Sales Order Price"]]]}
+]
