@@ -3,38 +3,42 @@ frappe.ui.form.on('Sales Invoice', {
 	
 		frappe.after_ajax(function() {
 
-			// following conditions assures its a follow up document
-			if (frm.doc && frm.doc.customer && frm.doc.items && frm.doc.items.length > 0 &&frm.doc.items[0].item_code)
+			// following conditions assures its a follow up document						
+			if (frm.doc.__islocal && frm.doc.customer &&frm.doc.items[0].item_code)
 			{
+				
+				var items = [];
 				
 				// onload
 				// foreach items, copy current rate to customer rate and apply discount on actual rate
-				$.each(frm.doc.items, function(i, item_doc){
-
-					if (!item_doc.rate || item_doc.consoleerp_customer_rate)
-						return;
-									
-					frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_rate", item_doc.rate);	
+				$.each(frm.doc.items, function(i, item_doc){								
 					
-					frappe.after_ajax(function(){
+					// adding item_code in as associative array
+					items.push(item_doc.item_code);
+									
+					frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_rate", item_doc.rate);					
+				});
+				
+				console.log(items);
+				
+				frappe.after_ajax(function(){
 						
 						frappe.call({
 							"method" : "siyar_erpnext.api.get_customer_item_disc_percent",
 							args : {
 								customer : frm.doc.customer,
-								item : item_doc.item_code
+								items : items							
 							},
 							callback : function(r) {
-								if (!r.message)
-									r.message = 0;
-								
-								frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_disc_percent", r.message);		
-								frappe.model.set_value("Sales Invoice Item", item_doc.name, "rate", item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100);							
+								console.log(r.message);
+								$.each(frm.doc.items, function(i, item_doc){										
+										frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_disc_percent", r.message[i]);	
+										frappe.model.set_value("Sales Invoice Item", item_doc.name, "rate", item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100);											
+								});																														
 							}
 						});
 						
 					});
-				});
 			}
 		});
 	},
