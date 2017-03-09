@@ -86,6 +86,12 @@ app_license = "MIT"
 #	}
 # }
 
+doc_events = {
+	"Sales Invoice" : {
+		"validate" : "siyar_erpnext.api.load_customer_item_name"
+	}
+}
+
 # Scheduled Tasks
 # ---------------
 
@@ -124,8 +130,12 @@ fixtures = [
 		"Sales Invoice-consoleerp_customer_discount_total",
 		"Sales Invoice-consoleerp_customer_rate_total",
 		"Sales Invoice-customer_original_rate_details",
+		
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
 		"Sales Invoice Item-consoleerp_customer_rate",
+		"Sales Invoice Item-consoleerp_customer_item_name",
+		
+		"Item Customer Detail-consoleerp_ref_name",
 		"Item Group-consoleerp_custgroup_discount"		
 ]]]}, 
 	
