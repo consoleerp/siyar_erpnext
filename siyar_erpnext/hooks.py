@@ -89,6 +89,12 @@ app_license = "MIT"
 doc_events = {
 	"Sales Invoice" : {
 		"validate" : "siyar_erpnext.api.load_customer_item_name"
+	},
+	"Sales Order" : {
+		"validate" : "siyar_erpnext.api.load_customer_item_name"
+	},
+	"Quotation" : {
+		"validate" : "siyar_erpnext.api.load_customer_item_name"
 	}
 }
 
@@ -132,11 +138,14 @@ fixtures = [
 		"Sales Invoice-customer_original_rate_details",
 		
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
-		"Sales Invoice Item-consoleerp_customer_rate",
-		"Sales Invoice Item-consoleerp_customer_item_name",
+		"Sales Invoice Item-consoleerp_customer_rate",		
 		
 		"Item Customer Detail-consoleerp_ref_name",
-		"Item Group-consoleerp_custgroup_discount"		
+		"Item Group-consoleerp_custgroup_discount",
+
+		"Sales Invoice Item-consoleerp_customer_item_name",
+		"Sales Order Item-consoleerp_customer_item_name",
+		"Quotation Item-consoleerp_customer_item_name"
 ]]]}, 
 	
 	{"dt" : "Print Format", "filters" : [["name", "in", ["Sales Order Price"]]]}
