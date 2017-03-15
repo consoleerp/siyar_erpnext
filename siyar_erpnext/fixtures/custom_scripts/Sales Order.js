@@ -10,9 +10,8 @@ frappe.ui.form.on("Sales Order Item", {
 	rate : function(frm, cdt, cdn) {
 		var doc = locals[cdt][cdn];
 		frappe.after_ajax(function(){
-			if (doc.rate < doc.valuation_rate){
-				frappe.msgprint("Rate is below the valuation rate");
-				frappe.model.set_value(cdt, cdn, "rate", doc.valuation_rate + 10);
+			if (doc.rate <= doc.valuation_rate){
+				frappe.msgprint("Rate ("+doc.rate+") is below the valuation rate ("+ doc.valuation_rate +").");
 			}
 		});
 	}
@@ -20,9 +19,13 @@ frappe.ui.form.on("Sales Order Item", {
 
 var fetch_av_qty = function(frm, cdt, cdn) {
 	var doc = locals[cdt][cdn];
+		
 	
 	frappe.after_ajax(function(){		
-		
+			
+		if (!doc.item_code || !doc.warehouse)
+			return;
+			
 		frappe.call({
 			"method" : "siyar_erpnext.api.item_warehouse_detail",
 			args : {
