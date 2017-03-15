@@ -4,12 +4,24 @@ frappe.ui.form.on("Sales Order Item", {
 	},
 	warehouse : function(frm, cdt, cdn) {
 		fetch_av_qty(frm,cdt,cdn);
+	},
+	
+	// error message if valuation rate > rate
+	rate : function(frm, cdt, cdn) {
+		var doc = locals[cdt][cdn];
+		frappe.after_ajax(function(){
+			if (doc.rate < doc.valuation_rate){
+				frappe.msgprint("Rate is below the valuation rate");
+				frappe.model.set_value(cdt, cdn, "rate", doc.valuation_rate + 10);
+			}
+		});
 	}
 });
 
 var fetch_av_qty = function(frm, cdt, cdn) {
-	frappe.after_ajax(function(){
-		var doc = locals[cdt][cdn];
+	var doc = locals[cdt][cdn];
+	
+	frappe.after_ajax(function(){		
 		
 		frappe.call({
 			"method" : "siyar_erpnext.api.item_warehouse_detail",
