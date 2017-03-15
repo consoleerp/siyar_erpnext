@@ -558,7 +558,7 @@
   "in_list_view": 0, 
   "in_standard_filter": 0, 
   "insert_after": "quantity_and_rate", 
-  "label": "consoleerp_av_qty", 
+  "label": "Av. Qty", 
   "modified": "2017-03-15 22:04:27.541703", 
   "name": "Sales Order Item-consoleerp_av_qty", 
   "no_copy": 0, 

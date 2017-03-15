@@ -93,7 +93,6 @@ var calculate_customer_total = function(frm){
 				total += item_doc.rate * item_doc.qty;
 
 		});	
-		show_alert("HHELLL");
 		frm.set_value("consoleerp_customer_total", total);
 	});
 }
