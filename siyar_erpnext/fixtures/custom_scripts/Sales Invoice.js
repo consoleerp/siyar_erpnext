@@ -61,3 +61,39 @@ frappe.ui.form.on('Sales Invoice', {
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_order_total", customer_order_total);
 	}
 });
+
+
+frappe.ui.form.on("Sales Invoice Item", {
+	item_code : function(frm, cdt, cdn) {
+		calculate_customer_total(frm);
+	},
+	rate : function(frm, cdt, cdn){
+		calculate_customer_total(frm);
+	},
+	qty : function(frm, cdt, cdn){
+		calculate_customer_total(frm);
+	},
+	items_remove : function(frm, cdt, cdn) {
+		calculate_customer_total(frm);
+	}
+});
+
+// calculates consoleerp_customer_total
+var calculate_customer_total = function(frm){
+	
+	frappe.after_ajax(function() {
+	
+		var total = 0;
+		
+		$.each(frm.doc.items, function(i, item_doc){	
+
+			if (item_doc.consoleerp_customer_rate)
+				total += item_doc.consoleerp_customer_rate * item_doc.qty;
+			else
+				total += item_doc.rate * item_doc.qty;
+
+		});	
+		show_alert("HHELLL");
+		frm.set_value("consoleerp_customer_total", total);
+	});
+}
