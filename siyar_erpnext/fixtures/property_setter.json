@@ -1,0 +1,19 @@
+[
+ {
+  "_assign": null, 
+  "_comments": null, 
+  "_liked_by": null, 
+  "_user_tags": null, 
+  "default_value": null, 
+  "doc_type": "Customer Group", 
+  "docstatus": 0, 
+  "doctype": "Property Setter", 
+  "doctype_or_field": "DocField", 
+  "field_name": "credit_days_based_on", 
+  "modified": "2017-03-16 13:42:19.486624", 
+  "name": "Customer Group-credit_days_based_on-options", 
+  "property": "options", 
+  "property_type": "Text", 
+  "value": "\nFixed Days\nLast Day of the Next Month\nCustom Day of Custom Month"
+ }
+]

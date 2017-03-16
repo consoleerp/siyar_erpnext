@@ -158,6 +158,13 @@ fixtures = [
 		"Sales Order Item-consoleerp_customer_item_name",
 		"Quotation Item-consoleerp_customer_item_name"
 ]]]}, 
+
+	{"dt" : "Property Setter", "filters" : [["name", "in", [
+		# Customer Group Custom Credit days
+		"Customer Group-credit_days_based_on-options"
+
+]]]},
+
 	
 	{"dt" : "Print Format", "filters" : [["name", "in", ["Sales Order Price"]]]}
 ]
