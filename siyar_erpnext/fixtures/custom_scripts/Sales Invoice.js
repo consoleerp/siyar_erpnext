@@ -1,3 +1,6 @@
+// what does frappe.provide ??
+frappe.require("assets/js/siyar_customer_group.min.js", function(){});
+
 frappe.ui.form.on('Sales Invoice', {
 	onload : function(frm) {		
 	

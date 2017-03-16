@@ -130,8 +130,13 @@ doc_events = {
 # override_whitelisted_methods = {
 # 	"frappe.desk.doctype.event.event.get_events": "siyar_erpnext.event.get_events"
 # }
+
 fixtures = [
 	{"dt" : "Custom Field", "filters" : [["name", "in", [
+		# Customer Group Custom Credit days
+		"Customer Group-consoleerp_credit_days",
+		"Customer Group-consoleerp_credit_months",
+	
 		"Sales Invoice-consoleerp_customer_order_total",
 		"Sales Invoice-consoleerp_customer_discount_total",
 		"Sales Invoice-consoleerp_customer_rate_total",

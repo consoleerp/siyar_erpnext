@@ -46,4 +46,5 @@ def item_warehouse_detail(item, warehouse):
 		return {"valuation_rate" : 0, "actual_qty" : 0, "reserved_qty" : 0, "reserved_qty_for_production" : 0}
 		
 	return binDoc_list[0]
-		
+
+	
