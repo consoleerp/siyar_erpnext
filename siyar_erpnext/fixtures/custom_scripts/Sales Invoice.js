@@ -90,8 +90,12 @@ var calculate_customer_total = function(frm){
 		
 		$.each(frm.doc.items, function(i, item_doc){	
 
-			if (item_doc.consoleerp_customer_rate)
+			if (item_doc.consoleerp_customer_rate){
 				total += item_doc.consoleerp_customer_rate * item_doc.qty;
+				
+				// update og. amt. when qty is changed
+				frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);
+			}
 			else
 				total += item_doc.rate * item_doc.qty;
 

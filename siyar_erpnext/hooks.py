@@ -148,6 +148,7 @@ fixtures = [
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
 		"Sales Invoice Item-consoleerp_customer_rate",
 		"Sales Invoice Item-consoleerp_original_amt",
+		"Sales Invoice Item-valuation_rate",
 		
 		"Sales Order Item-consoleerp_av_qty",
 		
