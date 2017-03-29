@@ -26,7 +26,7 @@ def get_customer_item_disc_percent(customer, items):
 
 def load_customer_item_name(self, method):
 	""" Loads the Cutomer Item Name in to the calling doc from the Item"""
-	if self.doctype == "Sales Invoice" and self.consoleerp_customer_total:
+	if self.doctype == "Sales Invoice" and self.consoleerp_customer_total != None:
 		from frappe.utils import money_in_words
 		self.consoleerp_customer_total_in_words = money_in_words(self.consoleerp_customer_total, self.currency)
 	
