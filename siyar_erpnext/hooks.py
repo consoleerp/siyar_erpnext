@@ -143,6 +143,7 @@ fixtures = [
 		"Sales Invoice-customer_original_rate_details",
 		"Sales Invoice-consoleerp_manual_invoice_no",
 		"Sales Invoice-consoleerp_customer_total",
+		"consoleerp_customer_total_in_words",
 		"Sales Invoice-po_no",
 		
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
@@ -151,6 +152,7 @@ fixtures = [
 		"Sales Invoice Item-valuation_rate",
 		
 		"Sales Order Item-consoleerp_av_qty",
+		"Sales Order Item-consoleerp_reserved_qty",
 		
 		"Item Customer Detail-consoleerp_ref_name",
 		"Item Group-consoleerp_custgroup_discount",

@@ -61,7 +61,18 @@ var fetch_av_qty = function(frm, cdt, cdn) {
 				
 				data = r.message;
 				
+				// find a better way to handle this
+				if (!data.actual_qty)
+					data.actual_qty = 0;
+				
+				if (!data.reserved_qty)
+					data.reserved_qty = 0;
+				
+				if (!data.reserved_qty_for_production)
+					data.reserved_qty_for_production = 0;
+				
 				frappe.model.set_value(cdt, cdn, "consoleerp_av_qty",  (data.actual_qty - data.reserved_qty - data.reserved_qty_for_production));
+				frappe.model.set_value(cdt, cdn, "consoleerp_reserved_qty", data.reserved_qty + data.reserved_qty_for_production);
 			}
 		});
 		
