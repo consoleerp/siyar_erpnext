@@ -47,6 +47,7 @@ frappe.ui.form.on('Sales Invoice', {
 		});
 	},
 	
+	// change this.. copy from calculated values
 	validate: function(frm) {
 
 		var customer_rate_total = 0;
@@ -59,6 +60,7 @@ frappe.ui.form.on('Sales Invoice', {
 		
 		var customer_order_total = customer_rate_total - customer_discount_total;
 		
+		// change this.. copy from calculated values
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_rate_total", customer_rate_total);
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_discount_total", customer_discount_total);
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_order_total", customer_order_total);
@@ -91,13 +93,13 @@ var calculate_customer_total = function(frm){
 		$.each(frm.doc.items, function(i, item_doc){	
 
 			if (item_doc.consoleerp_customer_rate){
-				total += item_doc.consoleerp_customer_rate * item_doc.qty;
 				
 				// update og. amt. when qty is changed
 				frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);
+				total += item_doc.consoleerp_original_amt
 			}
 			else
-				total += item_doc.rate * item_doc.qty;
+				total += item_doc.amount;
 
 		});	
 		frm.set_value("consoleerp_customer_total", total);
