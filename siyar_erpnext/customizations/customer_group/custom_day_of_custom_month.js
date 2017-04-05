@@ -3,11 +3,11 @@
 frappe.ui.form.on(cur_frm.doctype, {
 	// updates when customer or posting_date is changed
 	customer: function(frm){
-		this.update_due_date(frm);
+		update_due_date(frm);
 	},
 	posting_date: function(frm) {		
 		setTimeout(function() {    
-			this.update_due_date(frm);
+			update_due_date(frm);
 		}, 500);
 		
 	}
