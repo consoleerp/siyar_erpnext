@@ -17,7 +17,7 @@ frappe.ui.form.on(cur_frm.doctype, {
 var update_due_date = function(frm) {
 	
 	// if due date isnt applicable, return
-	if (!"due_date" in frm.doc || !"customer" in frm.doc)
+	if (frm.doc.is_pos || !frm.doc.customer)
 		return;
 		
 	// waiting till the system fetches the default
@@ -37,7 +37,6 @@ var update_due_date = function(frm) {
 			{
 				if (r.message)
 					frm.set_value("due_date", r.message);
-				show_alert(r.message);
 			}
 		});
 		
