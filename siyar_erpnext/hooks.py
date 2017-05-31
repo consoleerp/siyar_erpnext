@@ -94,7 +94,8 @@ doctype_js = {
 
 doc_events = {
 	"Sales Invoice" : {
-		"validate" : "siyar_erpnext.api.load_customer_item_name"
+		"validate" : "siyar_erpnext.customizations.sales_invoice.validate",
+		"before_submit": "siyar_erpnext.customizations.sales_invoice.before_submit"
 	},
 	"Sales Order" : {
 		"validate" : "siyar_erpnext.api.load_customer_item_name"
