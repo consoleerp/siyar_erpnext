@@ -12,7 +12,7 @@ frappe.ui.form.on('Sales Invoice', {
 		frappe.after_ajax(function() {
 
 			// if reference from Sales Order is present, this is a rebated sale..
-			is_rebated = (frm.doc.items.length > 0 && frm.doc.items[0].sales_order);
+			is_rebated = (frm.doc.items.length > 0 && (frm.doc.items.some(function(e, i, arr){ return e.sales_order || e.delivery_note; })));
 
 			// following conditions assures its a follow up document						
 			// doc is localName
