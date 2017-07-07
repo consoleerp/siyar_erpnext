@@ -87,20 +87,22 @@ frappe.ui.form.on('Sales Invoice', {
 			}
 		});
 
-		cur_frm.add_custom_button(__(frm.doc.siyar_status === "Received from Customer" ? "Set as not Received" : "Receive Invoice"), function() {
-			frappe.call({
-				method: "frappe.client.set_value",
-				args: {
-					doctype: "Sales Invoice",
-					name: frm.doc.name,
-					fieldname: "siyar_status",
-					value: frm.doc.siyar_status === "Received from Customer" ? "To Receive" : "Received from Customer"
-				},
-				callback: function(r) {
-					frm.reload_doc();
-				}
+		if (frm.doc.docstatus == 1) {
+			cur_frm.add_custom_button(__(frm.doc.siyar_status === "Received from Customer" ? "Set as not Received" : "Receive Invoice"), function() {
+				frappe.call({
+					method: "frappe.client.set_value",
+					args: {
+						doctype: "Sales Invoice",
+						name: frm.doc.name,
+						fieldname: "siyar_status",
+						value: frm.doc.siyar_status === "Received from Customer" ? "To Receive" : "Received from Customer"
+					},
+					callback: function(r) {
+						frm.reload_doc();
+					}
+				});
 			});
-		});
+		}
 	},
 	
 	validate: function(frm) {
