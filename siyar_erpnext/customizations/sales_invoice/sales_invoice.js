@@ -53,10 +53,7 @@ frappe.ui.form.on('Sales Invoice', {
 					
 					frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_rate", item_doc.rate);					
 				});
-				
-				console.log(items);
-				
-						
+
 				frappe.call({
 					"method" : "siyar_erpnext.api.get_customer_item_disc_percent",
 					args : {
@@ -88,6 +85,21 @@ frappe.ui.form.on('Sales Invoice', {
 				// cur_frm.fields_dict["consoleerp_customer_total"].df.hidden = 1;
 				// cur_frm.fields_dict["consoleerp_customer_total"].refresh();
 			}
+		});
+
+		cur_frm.add_custom_button(__(frm.doc.siyar_status === "Received from Customer" ? "Set as not Received" : "Receive Invoice"), function() {
+			frappe.call({
+				method: "frappe.client.set_value",
+				args: {
+					doctype: "Sales Invoice",
+					name: frm.doc.name,
+					fieldname: "siyar_status",
+					value: frm.doc.siyar_status === "Received from Customer" ? "To Receive" : "Received from Customer"
+				},
+				callback: function(r) {
+					frm.reload_doc();
+				}
+			});
 		});
 	},
 	

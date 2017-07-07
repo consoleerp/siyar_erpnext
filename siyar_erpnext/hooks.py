@@ -152,6 +152,7 @@ fixtures = [
 		"Sales Invoice-consoleerp_customer_total",
 		"Sales Invoice-consoleerp_customer_total_in_words",
 		"Sales Invoice-po_no",
+		"Sales Invoice-siyar_status",
 		
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
 		"Sales Invoice Item-consoleerp_customer_rate",
@@ -175,6 +176,6 @@ fixtures = [
 
 ]]]},
 
-	
+	{"dt": "Report", "filters": [["name", "in", ["Invoices to Receive"]]]},
 	{"dt" : "Print Format", "filters" : [["name", "in", ["Sales Order Price"]]]}
 ]
