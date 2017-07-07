@@ -1,0 +1,28 @@
+[
+ {
+  "add_total_row": 0, 
+  "apply_user_permissions": 1, 
+  "disabled": 0, 
+  "docstatus": 0, 
+  "doctype": "Report", 
+  "is_standard": "No", 
+  "javascript": null, 
+  "json": "{\"add_total_row\": 0, \"sort_by\": \"Sales Invoice.modified\", \"add_totals_row\": 0, \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [[\"Sales Invoice\", \"docstatus\", \"!=\", \"2\"], [\"Sales Invoice\", \"siyar_status\", \"!=\", \"Received from Customer\"]], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Sales Invoice\"], [\"customer\", \"Sales Invoice\"], [\"consoleerp_customer_total\", \"Sales Invoice\"], [\"grand_total\", \"Sales Invoice\"], [\"outstanding_amount\", \"Sales Invoice\"], [\"siyar_status\", \"Sales Invoice\"]]}", 
+  "letter_head": null, 
+  "modified": "2017-07-07 08:46:44.999680", 
+  "module": "Accounts", 
+  "name": "Invoices to Receive", 
+  "query": null, 
+  "ref_doctype": "Sales Invoice", 
+  "report_name": "Invoices to Receive", 
+  "report_type": "Report Builder", 
+  "roles": [
+   {
+    "role": "Accounts Manager"
+   }, 
+   {
+    "role": "Accounts User"
+   }
+  ]
+ }
+]
