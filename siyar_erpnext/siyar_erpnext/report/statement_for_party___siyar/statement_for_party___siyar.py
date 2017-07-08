@@ -53,7 +53,6 @@ def get_columns(filters):
 
 def get_data(filters):
 	gl_entries = get_gl_entries(filters)
-	print(gl_entries)
 	data = get_data_with_opening_closing(filters, gl_entries)
 	result = get_result_as_list(data, filters)
 	return result
@@ -77,7 +76,7 @@ def get_gl_entries(filters):
 		sum(credit) as credit,
 		voucher_type, voucher_no, remarks, is_opening
 	from `tabGL Entry`
-	where company=%(company)s {conditions} and voucher_type='Sales Invoice'
+	where company=%(company)s {conditions}
 	group by voucher_type, voucher_no
 	order by posting_date, party_type, party"""\
 	.format(conditions=get_conditions(filters)), filters, as_dict=1, debug=1)
