@@ -26,7 +26,7 @@ frappe.ui.form.on('Sales Invoice', {
 				// manual set value
 				manual_setValue = true;
 				
-				show_alert("rebated");				
+				frappe.show_alert("rebated");
 				// readonly customer rate
 				$.grep(cur_frm.fields_dict["items"].grid.docfields, function(e){
 					return e.fieldname == "consoleerp_customer_rate";
@@ -50,8 +50,7 @@ frappe.ui.form.on('Sales Invoice', {
 					
 					// adding item_code in as associative array
 					items.push(item_doc.item_code);
-					
-					frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_rate", item_doc.rate);					
+					item_doc.consoleerp_customer_rate = item_doc.rate;
 				});
 
 				frappe.call({
@@ -62,11 +61,15 @@ frappe.ui.form.on('Sales Invoice', {
 					},
 					callback : function(r) {
 						console.log(r.message);
-						$.each(frm.doc.items, function(i, item_doc){										
-								frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_disc_percent", r.message[i]);	
-								frappe.model.set_value("Sales Invoice Item", item_doc.name, "rate", item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100);	
-								frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);																			
+						$.each(frm.doc.items, function(i, item_doc){
+								item_doc.consoleerp_customer_disc_percent = r.message[i];
+								item_doc.rate = item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100;
+								item_doc.consoleerp_original_amt = item_doc.qty * item_doc.consoleerp_customer_rate;
+								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_disc_percent", r.message[i]);	
+								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "rate", item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100);	
+								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);																			
 						});	
+						frm.refresh_fields();
 						manual_setValue = false;
 					}
 				});
