@@ -70,6 +70,7 @@ frappe.ui.form.on('Sales Invoice', {
 								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);																			
 						});	
 						frm.refresh_fields();
+						frm.events.calculate_customer_total(frm);
 						manual_setValue = false;
 					}
 				});
@@ -109,7 +110,7 @@ frappe.ui.form.on('Sales Invoice', {
 	},
 	
 	validate: function(frm) {
-
+		frm.events.calculate_customer_total(frm);
 		var customer_rate_total = 0;
 		var customer_discount_total = 0;
 		
@@ -123,6 +124,22 @@ frappe.ui.form.on('Sales Invoice', {
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_rate_total", customer_rate_total);
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_discount_total", customer_discount_total);
 		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_order_total", customer_order_total);
+	},
+
+	calculate_customer_total: function(frm){
+		frappe.after_ajax(function() {
+			var total = 0;
+			$.each(frm.doc.items, function(i, item_doc){
+				if (item_doc.consoleerp_customer_rate){
+					total += item_doc.consoleerp_customer_rate * item_doc.qty;
+					// update og. amt. when qty is changed
+					frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);
+				}
+				else
+					total += item_doc.rate * item_doc.qty;
+			});
+			frm.set_value("consoleerp_customer_total", total);
+		});
 	}
 });
 
@@ -135,7 +152,7 @@ frappe.ui.form.on("Sales Invoice Item", {
 			manual_setValue = true;
 			frappe.model.set_value(cdt, cdn, "consoleerp_customer_rate", frappe.model.get_value(cdt, cdn, "rate"));
 			manual_setValue = false;
-			calculate_customer_total(frm);
+			frm.events.calculate_customer_total(frm);
 		});
 	},
 	
@@ -149,20 +166,20 @@ frappe.ui.form.on("Sales Invoice Item", {
 			manual_setValue = false;
 		}
 		
-		calculate_customer_total(frm);
+		frm.events.calculate_customer_total(frm);
 	},
 	
 	
 	qty : function(frm, cdt, cdn){
-		calculate_customer_total(frm);
+		frm.events.calculate_customer_total(frm);
 	},
 	
 	
 	items_remove : function(frm, cdt, cdn) {
-		calculate_customer_total(frm);
+		frm.events.calculate_customer_total(frm);
 	},
 	
-	
+
 	consoleerp_customer_rate : function(frm, cdt, cdn) {
 		// this is editable only when no rebate is applicable..
 		if (!is_rebated && !manual_setValue) {
@@ -174,20 +191,3 @@ frappe.ui.form.on("Sales Invoice Item", {
 		}
 	}
 });
-
-// calculates consoleerp_customer_total
-var calculate_customer_total = function(frm){	
-	frappe.after_ajax(function() {	
-		var total = 0;		
-		$.each(frm.doc.items, function(i, item_doc){	
-			if (item_doc.consoleerp_customer_rate){
-				total += item_doc.consoleerp_customer_rate * item_doc.qty;				
-				// update og. amt. when qty is changed
-				frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);
-			}
-			else
-				total += item_doc.rate * item_doc.qty;
-		});	
-		frm.set_value("consoleerp_customer_total", total);
-	});
-}
