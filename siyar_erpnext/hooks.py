@@ -176,6 +176,10 @@ fixtures = [
 
 ]]]},
 
-	{"dt": "Report", "filters": [["name", "in", ["Invoices to Receive"]]]},
+	{"dt": "Report", "filters": [["name", "in", 
+	[
+		"Invoices to Receive",
+		"Sales Order Shortage"
+	]]]},
 	{"dt" : "Print Format", "filters" : [["name", "in", ["Sales Order Price"]]]}
 ]
