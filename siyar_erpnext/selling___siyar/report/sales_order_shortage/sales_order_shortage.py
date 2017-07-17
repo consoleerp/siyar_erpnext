@@ -15,6 +15,7 @@ def get_data(filters):
 		SELECT 
 			so.name,
 			so_item.item_code,
+			item_doc.item_name,
 			sum(so_item.stock_qty),
 			sum(so_item.delivered_qty),
 			bin.actual_qty,
@@ -23,13 +24,15 @@ def get_data(filters):
 		FROM
 			`tabSales Order Item` so_item,
 			`tabSales Order` so,
-			`tabBin` bin
+			`tabBin` bin,
+			`tabItem` item_doc
 		WHERE
 			so.name = so_item.parent
 			AND so.docstatus = 1
 			AND bin.item_code = so_item.item_code
 			AND bin.warehouse = so_item.warehouse
 			AND (so_item.stock_qty - so_item.delivered_qty - bin.actual_qty) > 0
+			AND so_item.item_code = item_doc.item_code
 			AND {}
 		GROUP BY 
 			so.name, so_item.item_code, so_item.warehouse;
@@ -38,7 +41,8 @@ def get_data(filters):
 def get_columns(filters):
 	return [
 		_("Sales Order") + ":Link/Sales Order:100",
-		_("Item") + ":Link/Item:150",
+		_("Item Code") + ":Link/Item:100",
+		_("Item Name") + ":Data:200",
 		_("Qty") + ":Float:70",
 		_("Delivered Qty") + ":Float:80",
 		_("Available Qty") + ":Float:80",

@@ -40,7 +40,7 @@ def execute(filters=None):
 def get_columns():
 	return [_("Date") + ":Datetime:95", _("Item") + ":Link/Item:130", _("Item Name") + "::100", _("Item Group") + ":Link/Item Group:100",
 		_("Brand") + ":Link/Brand:100", _("Description") + "::200",
-		_("Party") + ":Data:100", _("Selling Price") + ":Float:80",		
+		_("Party") + ":Data:180", _("Selling Price") + ":Float:80",		
 		_("Warehouse") + ":Link/Warehouse:100",
 		_("Stock UOM") + ":Link/UOM:100", _("Qty") + ":Float:50", _("Balance Qty") + ":Float:100",
 		_("Incoming Rate") + ":Currency:110", _("Valuation Rate") + ":Currency:110", _("Balance Value") + ":Currency:110",
