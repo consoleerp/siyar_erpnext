@@ -43,10 +43,10 @@ def get_columns(filters):
 		_("Sales Order") + ":Link/Sales Order:100",
 		_("Item Code") + ":Link/Item:100",
 		_("Item Name") + ":Data:200",
-		_("Qty") + ":Float:70",
-		_("Delivered Qty") + ":Float:80",
-		_("Available Qty") + ":Float:80",
-		_("Required Qty") + ":Float:80",
+		_("Ordered Qty") + ":Float:90",
+		_("Delivered Qty") + ":Float:90",
+		_("Available Qty") + ":Float:90",
+		_("Required Qty") + ":Float:90",
 		_("Warehouse") + ":Link/Warehouse:100"
 	]
 	
