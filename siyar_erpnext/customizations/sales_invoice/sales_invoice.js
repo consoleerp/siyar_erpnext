@@ -111,21 +111,8 @@ frappe.ui.form.on('Sales Invoice', {
 	
 	validate: function(frm) {
 		frm.events.calculate_customer_total(frm);
-		var customer_rate_total = 0;
-		var customer_discount_total = 0;
-		
-		$.each(frm.doc.items, function(i, item_doc) {
-			customer_rate_total += item_doc.consoleerp_customer_rate * item_doc.qty;
-			customer_discount_total += item_doc.consoleerp_customer_rate * item_doc.qty * item_doc.consoleerp_customer_disc_percent / 100;
-		});
-		
-		var customer_order_total = customer_rate_total - customer_discount_total;
-		
-		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_rate_total", customer_rate_total);
-		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_discount_total", customer_discount_total);
-		frappe.model.set_value("Sales Invoice", frm.doc.name, "consoleerp_customer_order_total", customer_order_total);
 	},
-
+	// rate is for qty- not for stock_qty
 	calculate_customer_total: function(frm){
 		frappe.after_ajax(function() {
 			var total = 0;
