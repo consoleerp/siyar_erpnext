@@ -95,7 +95,9 @@ doctype_js = {
 doc_events = {
 	"Sales Invoice" : {
 		"validate" : "siyar_erpnext.customizations.sales_invoice.validate",
-		"before_submit": "siyar_erpnext.customizations.sales_invoice.before_submit"
+		"before_submit": "siyar_erpnext.customizations.sales_invoice.before_submit",
+		"on_submit": "siyar_erpnext.customizations.sales_invoice.on_submit",
+		"on_cancel": "siyar_erpnext.customizations.sales_invoice.on_cancel"
 	},
 	"Sales Order" : {
 		"validate" : "siyar_erpnext.api.load_customer_item_name"
@@ -153,7 +155,9 @@ fixtures = [
 		"Sales Invoice-consoleerp_customer_total_in_words",
 		"Sales Invoice-po_no",
 		"Sales Invoice-siyar_status",
+		"Sales Invoice-validate_with_delivery_note",
 		
+		"Sales Invoice Item-validate_with_delivery_note",
 		"Sales Invoice Item-consoleerp_customer_disc_percent",
 		"Sales Invoice Item-consoleerp_customer_rate",
 		"Sales Invoice Item-consoleerp_original_amt",

@@ -7,7 +7,13 @@ var is_rebated = false;
 var manual_setValue = false;
 
 frappe.ui.form.on('Sales Invoice', {
-	refresh : function(frm) {				
+	validate_with_delivery_note: function(frm) {
+		frm.doc.items.forEach(function(f) {
+			f.validate_with_delivery_note = frm.doc.validate_with_delivery_note;
+		})
+		refresh_field("items");
+	},
+	refresh: function(frm) {
 	
 		frappe.after_ajax(function() {
 
@@ -111,6 +117,7 @@ frappe.ui.form.on('Sales Invoice', {
 	
 	validate: function(frm) {
 		frm.events.calculate_customer_total(frm);
+		frm.trigger("validate_with_delivery_note")
 	},
 	// rate is for qty- not for stock_qty
 	calculate_customer_total: function(frm){
@@ -165,7 +172,10 @@ frappe.ui.form.on("Sales Invoice Item", {
 	items_remove : function(frm, cdt, cdn) {
 		frm.events.calculate_customer_total(frm);
 	},
-	
+
+	items_add: function(frm, cdt, cdn) {
+		frappe.model.set_value(cdt, cdn, "validate_with_delivery_note", frm.doc.validate_with_delivery_note);
+	},
 
 	consoleerp_customer_rate : function(frm, cdt, cdn) {
 		// this is editable only when no rebate is applicable..
