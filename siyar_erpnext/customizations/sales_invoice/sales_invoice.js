@@ -178,27 +178,18 @@ frappe.ui.form.on('Sales Invoice', {
 
 
 frappe.ui.form.on("Sales Invoice Item", {
-	item_code : function(frm, cdt, cdn) {				
-		// changing item code will fetch new rate
-		// load it into customer rate
-		frappe.after_ajax(function(){
-			manual_setValue = true;
-			frappe.model.set_value(cdt, cdn, "consoleerp_customer_rate", frappe.model.get_value(cdt, cdn, "rate"));
-			manual_setValue = false;
-			frm.events.calculate_customer_total(frm);
-		});
+	item_code : function(frm, cdt, cdn) {
+		setTimeout(function() {
+			frappe.after_ajax(function(){
+				frappe.model.set_value(cdt, cdn, "consoleerp_customer_rate", frappe.model.get_value(cdt, cdn, "rate"));
+				frm.events.calculate_customer_total(frm);
+			});
+		}, 1000);
 	},
 	
 	
 	rate : function(frm, cdt, cdn){
-		
-		// update customer rate if not set manually in code
-		if (!manual_setValue) {
-			manual_setValue = true;
-			frappe.model.set_value(cdt, cdn, "consoleerp_customer_rate", frappe.model.get_value(cdt, cdn, "rate"));
-			manual_setValue = false;
-		}
-		
+		frappe.model.set_value(cdt, cdn, "consoleerp_customer_rate", frappe.model.get_value(cdt, cdn, "rate"));
 		frm.events.calculate_customer_total(frm);
 	},
 	
@@ -217,13 +208,15 @@ frappe.ui.form.on("Sales Invoice Item", {
 	},
 
 	consoleerp_customer_rate : function(frm, cdt, cdn) {
-		// this is editable only when no rebate is applicable..
-		if (!is_rebated && !manual_setValue) {
-			// ie if this is not loaded from Sales Order
-			// set rate = this rate			
-			manual_setValue = true;
-			frappe.model.set_value(cdt, cdn, "rate", frappe.model.get_value(cdt, cdn, "consoleerp_customer_rate"));
-			manual_setValue = false;
-		}
+		// update consoleerp_customer_disc_percent
+		locals[cdt][cdn].consoleerp_customer_disc_percent = 100 - (locals[cdt][cdn].consoleerp_customer_rate / locals[cdt][cdn].rate) * 100;
+		frm.refresh_field("items");
+		frm.events.calculate_customer_total(frm);
+	},
+
+	consoleerp_customer_disc_percent: function(frm, cdt, cdn) {
+		locals[cdt][cdn].consoleerp_customer_rate = (1 - locals[cdt][cdn].consoleerp_customer_disc_percent / 100) * locals[cdt][cdn].rate;
+		frm.refresh_field("items");
+		frm.events.calculate_customer_total(frm);
 	}
 });
