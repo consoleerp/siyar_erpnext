@@ -209,13 +209,13 @@ frappe.ui.form.on("Sales Invoice Item", {
 
 	consoleerp_customer_rate : function(frm, cdt, cdn) {
 		// update consoleerp_customer_disc_percent
-		locals[cdt][cdn].consoleerp_customer_disc_percent = 100 - (locals[cdt][cdn].consoleerp_customer_rate / locals[cdt][cdn].rate) * 100;
+		locals[cdt][cdn].consoleerp_customer_disc_percent = 100 - (locals[cdt][cdn].rate / locals[cdt][cdn].consoleerp_customer_rate) * 100;
 		frm.refresh_field("items");
 		frm.events.calculate_customer_total(frm);
 	},
 
 	consoleerp_customer_disc_percent: function(frm, cdt, cdn) {
-		locals[cdt][cdn].consoleerp_customer_rate = (1 - locals[cdt][cdn].consoleerp_customer_disc_percent / 100) * locals[cdt][cdn].rate;
+		locals[cdt][cdn].rate = (1 - locals[cdt][cdn].consoleerp_customer_disc_percent / 100) * locals[cdt][cdn].consoleerp_customer_rate;
 		frm.refresh_field("items");
 		frm.events.calculate_customer_total(frm);
 	}
