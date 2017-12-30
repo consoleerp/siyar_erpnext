@@ -163,6 +163,9 @@ fixtures = [
 		"Sales Invoice Item-consoleerp_original_amt",
 		"Sales Invoice Item-valuation_rate",
 		
+		# VAT MADNESS
+		"Sales Taxes and Charges-vat_madness",
+		
 		"Sales Order Item-consoleerp_av_qty",
 		"Sales Order Item-consoleerp_reserved_qty",
 		
