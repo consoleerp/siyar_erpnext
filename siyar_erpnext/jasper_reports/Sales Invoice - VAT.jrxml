@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
-<!-- 2017-12-28T10:48:21 -->
+<!-- 2017-12-31T09:48:37 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sales Invoice" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9c4edd9-b8d7-4aaa-b454-a78252adbf6c">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Console Server - Dev"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -41,6 +41,8 @@
 		</box>
 	</style>
 	<subDataset name="DetailDataSet" uuid="6c94dce6-4874-448c-83ff-e5f2775dc870">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Console Server - Dev"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="name" class="java.lang.String"/>
 		<parameter name="tax_percentage" class="java.lang.Float">
 			<parameterDescription><![CDATA[]]></parameterDescription>
@@ -49,20 +51,79 @@
 		<queryString>
 			<![CDATA[select * from `tabSales Invoice Item` where parent=$P{name} order by idx]]>
 		</queryString>
-		<field name="item_code" class="java.lang.String"/>
+		<field name="name" class="java.lang.String"/>
+		<field name="creation" class="java.sql.Timestamp"/>
+		<field name="modified" class="java.sql.Timestamp"/>
+		<field name="modified_by" class="java.lang.String"/>
+		<field name="owner" class="java.lang.String"/>
+		<field name="docstatus" class="java.lang.Integer"/>
+		<field name="parent" class="java.lang.String"/>
+		<field name="parentfield" class="java.lang.String"/>
+		<field name="parenttype" class="java.lang.String"/>
+		<field name="idx" class="java.lang.Integer"/>
+		<field name="base_price_list_rate" class="java.math.BigDecimal"/>
+		<field name="image" class="java.lang.String"/>
+		<field name="serial_no" class="java.lang.String"/>
+		<field name="qty" class="java.math.BigDecimal"/>
+		<field name="margin_rate_or_amount" class="java.math.BigDecimal"/>
+		<field name="rate" class="java.math.BigDecimal"/>
+		<field name="cost_center" class="java.lang.String"/>
+		<field name="target_warehouse" class="java.lang.String"/>
+		<field name="dn_detail" class="java.lang.String"/>
+		<field name="actual_qty" class="java.math.BigDecimal"/>
+		<field name="quality_inspection" class="java.lang.String"/>
+		<field name="page_break" class="java.lang.Integer"/>
+		<field name="base_net_rate" class="java.math.BigDecimal"/>
+		<field name="discount_percentage" class="java.math.BigDecimal"/>
 		<field name="item_name" class="java.lang.String"/>
+		<field name="base_net_amount" class="java.math.BigDecimal"/>
+		<field name="margin_type" class="java.lang.String"/>
+		<field name="net_rate" class="java.math.BigDecimal"/>
+		<field name="stock_uom" class="java.lang.String"/>
+		<field name="asset" class="java.lang.String"/>
+		<field name="warehouse" class="java.lang.String"/>
 		<field name="description" class="java.lang.String"/>
-		<field name="qty" class="java.lang.Float"/>
-		<field name="rate" class="java.lang.Float"/>
-		<field name="amount" class="java.lang.Float"/>
-		<field name="consoleerp_customer_rate" class="java.lang.Float"/>
-		<field name="consoleerp_customer_disc_percent" class="java.lang.Float"/>
-		<field name="consoleerp_original_amt" class="java.lang.Float"/>
-		<field name="valuation_rate" class="java.lang.Float"/>
+		<field name="brand" class="java.lang.String"/>
+		<field name="barcode" class="java.lang.String"/>
+		<field name="base_rate" class="java.math.BigDecimal"/>
+		<field name="item_code" class="java.lang.String"/>
+		<field name="base_amount" class="java.math.BigDecimal"/>
+		<field name="expense_account" class="java.lang.String"/>
+		<field name="delivered_qty" class="java.math.BigDecimal"/>
+		<field name="delivered_by_supplier" class="java.lang.Integer"/>
+		<field name="price_list_rate" class="java.math.BigDecimal"/>
+		<field name="sales_order" class="java.lang.String"/>
+		<field name="item_tax_rate" class="java.lang.String"/>
+		<field name="income_account" class="java.lang.String"/>
+		<field name="actual_batch_qty" class="java.math.BigDecimal"/>
+		<field name="item_group" class="java.lang.String"/>
+		<field name="so_detail" class="java.lang.String"/>
+		<field name="delivery_note" class="java.lang.String"/>
+		<field name="amount" class="java.math.BigDecimal"/>
+		<field name="customer_item_code" class="java.lang.String"/>
+		<field name="batch_no" class="java.lang.String"/>
+		<field name="net_amount" class="java.math.BigDecimal"/>
+		<field name="is_fixed_asset" class="java.lang.Integer"/>
+		<field name="pricing_rule" class="java.lang.String"/>
+		<field name="total_margin" class="java.math.BigDecimal"/>
+		<field name="consoleerp_customer_rate" class="java.math.BigDecimal"/>
+		<field name="consoleerp_customer_disc_percent" class="java.math.BigDecimal"/>
+		<field name="consoleerp_customer_item_name" class="java.lang.String"/>
+		<field name="consoleerp_original_amt" class="java.math.BigDecimal"/>
+		<field name="valuation_rate" class="java.math.BigDecimal"/>
+		<field name="stock_qty" class="java.math.BigDecimal"/>
+		<field name="conversion_factor" class="java.math.BigDecimal"/>
 		<field name="uom" class="java.lang.String"/>
-		<field name="idx" class="java.lang.Integer">
-			<fieldDescription><![CDATA[]]></fieldDescription>
-		</field>
+		<field name="allow_zero_valuation_rate" class="java.lang.Integer"/>
+		<field name="rate_with_margin" class="java.math.BigDecimal"/>
+		<field name="validate_with_delivery_note" class="java.lang.Integer"/>
+		<field name="tax_code" class="java.lang.String"/>
+		<field name="total_weight" class="java.math.BigDecimal"/>
+		<field name="base_rate_with_margin" class="java.math.BigDecimal"/>
+		<field name="weight_uom" class="java.lang.String"/>
+		<field name="weight_per_unit" class="java.math.BigDecimal"/>
+		<field name="consoleerp_item_tax_amount" class="java.math.BigDecimal"/>
+		<field name="consoleerp_item_grand_total" class="java.math.BigDecimal"/>
 	</subDataset>
 	<parameter name="name" class="java.lang.String">
 		<defaultValueExpression><![CDATA["SINV-00001"]]></defaultValueExpression>
@@ -182,7 +243,7 @@
 	<field name="consoleerp_customer_order_total" class="java.math.BigDecimal"/>
 	<field name="manual_invoice_no" class="java.lang.String"/>
 	<field name="consoleerp_manual_invoice_no" class="java.lang.String"/>
-	<field name="consoleerp_customer_total" class="java.lang.Float"/>
+	<field name="consoleerp_customer_total" class="java.math.BigDecimal"/>
 	<field name="po_no" class="java.lang.String"/>
 	<field name="consoleerp_customer_total_in_words" class="java.lang.String"/>
 	<field name="tax_id" class="java.lang.String"/>
@@ -203,7 +264,9 @@
 	<field name="customer_name_in_arabic" class="java.lang.String"/>
 	<field name="permit_no" class="java.lang.String"/>
 	<field name="reverse_charge_applicable" class="java.lang.String"/>
-	<field name="tax_percentage" class="java.lang.Float"/>
+	<field name="consoleerp_customer_grand_total" class="java.math.BigDecimal"/>
+	<field name="consoleerp_customer_grand_total_in_words" class="java.lang.String"/>
+	<field name="tax_percentage" class="java.math.BigDecimal"/>
 	<variable name="gross_total" class="java.lang.Float"/>
 	<variable name="discount_total" class="java.lang.Float"/>
 	<background>
@@ -438,7 +501,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<paragraph lineSpacing="Single"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{consoleerp_original_amt} * $P{tax_percentage} / 100]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{consoleerp_item_tax_amount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -453,7 +516,7 @@
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<paragraph lineSpacing="Single"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{consoleerp_original_amt} * (1 + $P{tax_percentage} / 100)]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{consoleerp_item_grand_total}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -465,13 +528,12 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band splitType="Stretch">
+		<band height="100" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="106" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="inch"/>
+	<lastPageFooter>
+		<band height="101">
 			<textField pattern="#,#00.00">
 				<reportElement x="453" y="18" width="100" height="20" uuid="56dffba6-c68b-4fd0-9eed-d74e85bb9106"/>
 				<textElement textAlignment="Right">
@@ -491,19 +553,19 @@
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tax_percentage} * $F{consoleerp_customer_total} / 100]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{total_taxes_and_charges}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,#00.00">
 				<reportElement x="453" y="81" width="100" height="20" uuid="c8b87e0c-0b51-4a0f-8a74-23d431e1ee39"/>
 				<textElement textAlignment="Right">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[(100 + $F{tax_percentage}) * $F{consoleerp_customer_total} / 100]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{consoleerp_customer_grand_total}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="70" width="410" height="30" uuid="89c945a6-9c1c-456d-890d-e71afa4e09af"/>
-				<textFieldExpression><![CDATA[$F{in_words}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{consoleerp_customer_grand_total_in_words}]]></textFieldExpression>
 			</textField>
 		</band>
-	</summary>
+	</lastPageFooter>
 </jasperReport>
