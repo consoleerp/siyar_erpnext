@@ -145,6 +145,9 @@ fixtures = [
 		# Customer Group Custom Credit days
 		"Customer Group-consoleerp_credit_days",
 		"Customer Group-consoleerp_credit_months",
+		"Customer Group-consoleerp_vendor_id",
+		"Sales Invoice-consoleerp_customer_group",
+		"Sales Invoice-consoleerp_vendor_id",
 	
 		"Sales Invoice-consoleerp_customer_order_total",
 		"Sales Invoice-consoleerp_customer_discount_total",

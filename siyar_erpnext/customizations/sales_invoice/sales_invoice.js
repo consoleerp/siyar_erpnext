@@ -16,6 +16,28 @@ var is_rebated = false;
 var manual_setValue = false;
 
 frappe.ui.form.on('Sales Invoice', {
+	setup: function(frm) {
+		frm.add_fetch("customer", "customer_group", "consoleerp_customer_group");		
+	},
+	consoleerp_customer_group: function(frm) {
+		if (!frm.doc.consoleerp_customer_group)
+			return;
+		frappe.call({
+			method: "frappe.client.get_value",
+			args: {
+				doctype: "Customer Group",
+				fieldname: "consoleerp_vendor_id",
+				filters: frm.doc.consoleerp_customer_group
+			},
+			callback: function(r) {
+				console.error(r);
+				if (r.message) {
+					frm.set_value("consoleerp_vendor_id", r.message.consoleerp_vendor_id);
+				} else
+					frm.set_value("consoleerp_vendor_id", "");
+			}
+		});
+	},
 	validate_with_delivery_note: function(frm) {
 		frm.doc.items.forEach(function(f) {
 			f.validate_with_delivery_note = frm.doc.validate_with_delivery_note;
