@@ -151,8 +151,9 @@ fixtures = [
 		"Sales Invoice-consoleerp_customer_rate_total",
 		"Sales Invoice-customer_original_rate_details",
 		"Sales Invoice-consoleerp_manual_invoice_no",
+		"Sales Invoice-consoleerp_customer_grand_total",
+		"Sales Invoice-consoleerp_customer_grand_total_in_words",
 		"Sales Invoice-consoleerp_customer_total",
-		"Sales Invoice-consoleerp_customer_total_in_words",
 		"Sales Invoice-po_no",
 		"Sales Invoice-siyar_status",
 		"Sales Invoice-validate_with_delivery_note",
@@ -165,6 +166,8 @@ fixtures = [
 		
 		# VAT MADNESS
 		"Sales Taxes and Charges-vat_madness",
+		"Sales Invoice Item-consoleerp_item_tax_amount",
+		"Sales Invoice Item-consoleerp_item_grand_total",
 		
 		"Sales Order Item-consoleerp_av_qty",
 		"Sales Order Item-consoleerp_reserved_qty",

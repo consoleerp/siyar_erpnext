@@ -1,11 +1,11 @@
 import frappe
-from frappe.utils import flt, cint
+from frappe.utils import flt, cint, cstr
 
 def validate(self, method):		
 
 	import siyar_erpnext.api
 	siyar_erpnext.api.load_customer_item_name(self, method)
-	calculate_customer_total(self)
+	calculate_customer_taxes_and_totals(self)
 
 
 def before_submit(self, method):
@@ -19,7 +19,7 @@ def on_submit(self, method):
 def on_cancel(self, method):
 	validate_with_delivery_note(self)
 
-def calculate_customer_total(self):
+def calculate_customer_taxes_and_totals(self):
 	total = 0
 	for cdoc in self.items:
 		if cdoc.consoleerp_customer_rate:
@@ -31,7 +31,44 @@ def calculate_customer_total(self):
 	self.consoleerp_customer_total = total
 	self.consoleerp_customer_discount_total = self.consoleerp_customer_total - self.total
 	self.consoleerp_order_total = self.total
+	
+	# get tax
+	for tax in self.taxes:
+		if cstr(tax.charge_type) != "On Net Total" and not (cstr(tax.charge_type) == "Actual" and tax.vat_madness):
+			continue
+		
+		if tax.rate:
+			tax.vat_madness = "On Net Total : " + tax.rate;
+		
+		#this rate will be handled by calculate_taxes_and_totals
+		tax.rate = flt(tax.vat_madness.split(" : ")[1]);
+		
+		from erpnext.controllers.taxes_and_totals import calculate_taxes_and_totals
+		import json
+		
+		amount = 0;
+		for item in self.items:
+			# from taxes_and_totals.py
+			item_tax_map = json.loads(item.item_tax_rate) if item.item_tax_rate else {}
+			item_tax_rate = _get_tax_rate(self, tax, item_tax_map)
+			item_tax_amount = item.consoleerp_original_amt * item_tax_rate / 100;
+			item.consoleerp_item_tax_amount = item_tax_amount;
+			item.consoleerp_item_grand_total = item.consoleerp_original_amt + item_tax_amount;
+			amount += item_tax_amount;
+		
+		tax.charge_type = "Actual"
+		tax.tax_amount = amount
+	self.calculate_taxes_and_totals()
+	self.consoleerp_customer_grand_total = self.consoleerp_customer_total + self.total_taxes_and_charges;
+	
+	from frappe.utils import money_in_words
+	self.consoleerp_customer_grand_total_in_words = money_in_words(self.consoleerp_customer_grand_total)
 
+def _get_tax_rate(self, tax, item_tax_map):
+		if item_tax_map.has_key(tax.account_head):
+			return flt(item_tax_map.get(tax.account_head), self.precision("rate", tax))
+		else:
+			return tax.rate
 
 def validate_with_delivery_note(self):
 	# We are only doing this:

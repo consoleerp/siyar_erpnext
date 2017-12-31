@@ -5,6 +5,7 @@
 //
 // Methods are inherited from SalesInvoiceController via `cur_frm.csript`
 // Custom Field vat_madness in Sales Taxes and Charges
+// // any changes here, pls reflect in associated .py file
 
 // Custom Day of Custom Month Due date calculation
 {% include 'siyar_erpnext/customizations/customer_group/custom_day_of_custom_month.js' %}
@@ -125,9 +126,10 @@ frappe.ui.form.on('Sales Invoice', {
 	
 	validate: function(frm) {
 		frm.events.calculate_customer_total(frm);
-		frm.events.manual_customer_taxes(frm);
 	},
 	// rate is for qty- not for stock_qty
+
+	// any changes here, pls reflect in associated .py file
 	calculate_customer_total: function(frm){
 		var total = 0;
 		$.each(frm.doc.items, function(i, item_doc){
@@ -140,18 +142,19 @@ frappe.ui.form.on('Sales Invoice', {
 				total += item_doc.rate * item_doc.qty;
 		});
 		frm.set_value("consoleerp_customer_total", total);
+		frm.events.manual_customer_taxes_and_totals(frm);
 	},
 	
 	/** 
 	---- CASES ----
 	
 	**/
-	manual_customer_taxes: function(frm) {
+	manual_customer_taxes_and_totals: function(frm) {
 		$.each(frm.doc.taxes || [], function(i, tax) {
 			
 			// On Net Total only does rate thing, checking vat_madness when doc is edited
 			if (cstr(tax.charge_type) != "On Net Total" && !(cstr(tax.charge_type) == "Actual" && tax.vat_madness))
-				return;
+				return true; // continue
 			
 			if (tax.rate) // some new rate ? maybe no rate ? either case get
 				tax.vat_madness = "On Net Total : " + tax.rate;
@@ -166,13 +169,17 @@ frappe.ui.form.on('Sales Invoice', {
 				// assuming get_tax_rate does not perform a check on charge_type
 				var item_tax_rate = cur_frm.cscript._get_tax_rate(tax, item_tax_map);
 				
-				amount += item.consoleerp_original_amt * item_tax_rate / 100;
+				var item_tax_amount = item.consoleerp_original_amt * item_tax_rate / 100;
+				item.consoleerp_item_tax_amount = item_tax_amount;
+				item.consoleerp_item_grand_total = item.consoleerp_original_amt + item_tax_amount;
+				amount += item_tax_amount;
 			});
 			// calculate_taxes_and_totals() is called in the end
 			tax.charge_type = "Actual";
 			tax.tax_amount = amount;
 		});
 		cur_frm.cscript.calculate_taxes_and_totals();
+		frm.doc.consoleerp_customer_grand_total = frm.doc.consoleerp_customer_total + frm.doc.total_taxes_and_charges;
 	}
 });
 
