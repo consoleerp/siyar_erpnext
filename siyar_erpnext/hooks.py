@@ -157,6 +157,7 @@ fixtures = [
 		"Sales Invoice-po_no",
 		"Sales Invoice-siyar_status",
 		"Sales Invoice-validate_with_delivery_note",
+		"Sales Invoice-consoleerp_dn_detail",
 		
 		"Sales Invoice Item-validate_with_delivery_note",
 		"Sales Invoice Item-consoleerp_customer_disc_percent",

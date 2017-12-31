@@ -6,7 +6,21 @@ def validate(self, method):
 	import siyar_erpnext.api
 	siyar_erpnext.api.load_customer_item_name(self, method)
 	calculate_customer_taxes_and_totals(self)
-
+	
+	# delivery notes
+	delivery_notes = []
+	for item in self.items:
+		if item.delivery_note and item.delivery_note not in delivery_notes:			
+			delivery_notes.append(item.delivery_note)
+	if len(delivery_notes) <= 1:
+		self.consoleerp_dn_detail = delivery_notes[0] if len(delivery_notes) == 1 else ""
+	else:
+		dn_detail = "DN-"
+		for name in delivery_notes:
+			if dn_detail != "DN-":
+				dn_detail += ","
+			dn_detail += name.split("DN-")[1].lstrip('0')
+		self.consoleerp_dn_detail = dn_detail
 
 def before_submit(self, method):
 	import consoleerp_erpnext_client.customizations.item_stock_validation	
