@@ -201,7 +201,7 @@ frappe.ui.form.on('Sales Invoice', {
 			tax.tax_amount = amount;
 		});
 		cur_frm.cscript.calculate_taxes_and_totals();
-		frm.doc.consoleerp_customer_grand_total = frm.doc.consoleerp_customer_total + frm.doc.total_taxes_and_charges;
+		frm.doc.consoleerp_customer_grand_total = frm.doc.consoleerp_customer_total + frm.doc.total_taxes_and_charges - frm.doc.discount_amount;
 	}
 });
 

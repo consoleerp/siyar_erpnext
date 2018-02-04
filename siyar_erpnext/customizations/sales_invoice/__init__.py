@@ -73,7 +73,7 @@ def calculate_customer_taxes_and_totals(self):
 		tax.charge_type = "Actual"
 		tax.tax_amount = amount
 	self.calculate_taxes_and_totals()
-	self.consoleerp_customer_grand_total = self.consoleerp_customer_total + self.total_taxes_and_charges;
+	self.consoleerp_customer_grand_total = self.consoleerp_customer_total + self.total_taxes_and_charges - self.discount_amount;
 	
 	from frappe.utils import money_in_words
 	self.consoleerp_customer_grand_total_in_words = money_in_words(self.consoleerp_customer_grand_total)
