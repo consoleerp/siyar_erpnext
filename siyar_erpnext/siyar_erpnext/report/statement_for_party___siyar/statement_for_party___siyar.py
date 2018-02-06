@@ -170,12 +170,12 @@ def get_partywise_gle(filters, gl_entries, gle_map):
 		elif gle.posting_date <= to_date:
 			party_dict = gle_map[gle.party_type][gle.party]
 			
-			balance = party_dict.entries[-1].balance if party_dict.entries else 0
+			balance = party_dict.entries[-1].balance if party_dict.entries else gle_map[gle.party_type][gle.party].opening
 			balance += gle.debit
 			balance -= gle.credit
 			gle["balance"] = balance
 			
-			balance_before_rebate = party_dict.entries[-1].balance_before_rebate if party_dict.entries else 0
+			balance_before_rebate = party_dict.entries[-1].balance_before_rebate if party_dict.entries else gle_map[gle.party_type][gle.party].opening_before_rebate
 			balance_before_rebate += gle.debit_before_rebate or 0
 			balance_before_rebate -= gle.credit
 			gle["balance_before_rebate"] = balance_before_rebate
