@@ -36,7 +36,14 @@ def on_cancel(self, method):
 def calculate_customer_taxes_and_totals(self):
 	total = 0
 	for cdoc in self.items:
-		if cdoc.consoleerp_customer_rate:
+		if cdoc.consoleerp_customer_disc_percent:
+			# taxes_and_totals controller updates rate based on rate_with_margin
+			
+			cdoc.margin_type = "Amount"
+			cdoc.rate = flt(cdoc.consoleerp_customer_rate * (1 - (cdoc.consoleerp_customer_disc_percent / 100)))
+			cdoc.margin_rate_or_amount = cdoc.rate - cdoc.price_list_rate
+			cdoc.rate_with_margin = cdoc.rate
+			
 			total += cdoc.consoleerp_customer_rate * cdoc.qty
 			cdoc.consoleerp_original_amt = cdoc.consoleerp_customer_rate * cdoc.qty
 		else:
