@@ -7,6 +7,11 @@ def validate(self, method):
 	siyar_erpnext.api.load_customer_item_name(self, method)
 	calculate_customer_taxes_and_totals(self)
 	
+	# vendor_id
+	customer_group = frappe.get_value("Customer", self.customer, "customer_group")
+	vendor_id = frappe.get_value("Customer Group", customer_group, "consoleerp_vendor_id")
+	self.consoleerp_vendor_id = vendor_id
+	
 	# delivery notes
 	delivery_notes = []
 	for item in self.items:
@@ -80,7 +85,7 @@ def calculate_customer_taxes_and_totals(self):
 		tax.charge_type = "Actual"
 		tax.tax_amount = amount
 	self.calculate_taxes_and_totals()
-	self.consoleerp_customer_grand_total = self.consoleerp_customer_total + self.total_taxes_and_charges - self.discount_amount;
+	self.consoleerp_customer_grand_total = self.consoleerp_customer_total + (self.total_taxes_and_charges or 0) - (self.discount_amount or 0);
 	
 	from frappe.utils import money_in_words
 	self.consoleerp_customer_grand_total_in_words = money_in_words(self.consoleerp_customer_grand_total)
