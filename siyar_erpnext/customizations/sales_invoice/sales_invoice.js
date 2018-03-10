@@ -45,6 +45,38 @@ frappe.ui.form.on('Sales Invoice', {
 		refresh_field("items");
 	},
 	refresh: function(frm) {
+		
+		// RENAME DOC
+		if (frm.doc.docstatus == 0) {
+			frm.add_custom_button('Rename', function() {
+				frappe.prompt([
+					{'fieldname': 'new_name', 'fieldtype': 'Data', 'label': 'New Name', 'reqd': 1, 'default': frm.doc.name}  
+				],
+				function(values){
+					frappe.call({
+						method: "frappe.model.rename_doc.rename_doc",
+						freeze: true,
+						args: {
+							doctype: "Sales Invoice",
+							old: frm.doc.name,
+							new: values.new_name,
+							force: 1
+						},
+						callback: function(r) {
+							if (!r.exc) {
+								frappe.set_route("Form", "Sales Invoice", r.message);
+								frappe.msgprint("Successfully Renamed");
+							} else {
+								frappe.msgprint("Rename Failed");
+							}
+						}
+					})
+				},
+				'Rename Sales Invoice',
+				'Rename'
+				)
+			});
+		}
 	
 		frappe.after_ajax(function() {
 
