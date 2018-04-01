@@ -3,7 +3,7 @@
 
 from __future__ import unicode_literals
 import frappe
-from frappe.utils import getdate, flt
+from frappe.utils import getdate, flt, add_to_date
 
 def execute(filters=None):
 	validate_filers(filters)
@@ -110,7 +110,7 @@ def get_valuation_rate(invoice, item):
 		where item_code = %(item_code)s and warehouse = %(warehouse)s and valuation_rate > 0
 		 and timestamp(posting_date, posting_time) < timestamp(%(posting_date)s, %(posting_time)s)
 		order by posting_date desc, posting_time desc, name desc limit 1
-	""", {"item_code": item.item_code, "warehouse": item.warehouse, "posting_date": invoice.posting_date, "posting_time": invoice.posting_time})
+	""", {"item_code": item.item_code, "warehouse": item.warehouse, "posting_date": invoice.posting_date, "posting_time": invoice.posting_time}, debug=False)
 	return valuation_rate[0][0] if valuation_rate else 0
 
 def get_item_tax(invoice, item):
@@ -118,9 +118,14 @@ def get_item_tax(invoice, item):
 	return item.consoleerp_original_amt / invoice.consoleerp_customer_total * invoice.total_taxes_and_charges
 
 def get_invoices(filters):
-	_filters = {"posting_date": ("between", [filters.from_date, filters.to_date]), "docstatus": 1}
+	# real weird
+	_filters = {"posting_date": ("between", [add_to_date(filters.from_date, days=-1, as_string=True), add_to_date(filters.to_date, days=-1, as_string=True)]), "docstatus": 1}
+	# _filters = {"posting_date": ("between", [filters.from_date, filters.to_date]), "docstatus": 1}
 	if filters.sales_invoice:
 		_filters["name"] = filters.sales_invoice
+	if filters.customer:
+		_filters["customer"] = filters.customer;
+	print(_filters)
 	return frappe.get_all("Sales Invoice", fields=["*"], filters=_filters)
 
 def get_invoice_items(invoice):
