@@ -20,14 +20,25 @@ def validate_filers(filters):
 def get_data(filters):
 	data = []
 	invoices = get_invoices(filters)
+	total_row = get_total_template_row(filters)
 	for invoice in invoices:
 		if filters.detailed_report == 1:
-			data = process_invoice_items(invoice, data)
+			data, total_row = process_invoice_items(invoice, data, total_row)
 		else:
-			data = process_invoice(invoice, data)
+			data, total_row = process_invoice(invoice, data, total_row)
+			
+	data.append(get_total_row(filters, data, total_row));
 	return data
 
-def process_invoice(invoice, data):
+def get_total_template_row(filters):
+	return { 'qty': 0, 'unit_price': 0, 'total': 0, 'vat_amount': 0, 'amount': 0, 'rebate': 0, 'net_value': 0, 'valuation_rate': 0, 'total_valuation': 0, 'profit': 0 } if filters.detailed_report == 1 else \
+					{ 'total': 0, 'vat_amount': 0, 'amount': 0, 'rebate': 0, 'net_value': 0 }
+					
+def get_total_row(filters, data, total_row):
+	return ['', '', '', '', '', '', total_row['qty'], total_row['unit_price'], total_row['total'], total_row['vat_amount'], total_row['amount'], total_row['rebate'] / total_row['total'] * 100, total_row['rebate'], total_row['net_value'], total_row['valuation_rate'], total_row['total_valuation'], total_row['profit'], total_row['profit'] * 100 / total_row['total_valuation'] ] if filters.detailed_report == 1 else \
+		['', '', '', total_row['total'], total_row['vat_amount'], total_row['amount'], total_row['rebate'], total_row['net_value']]
+
+def process_invoice(invoice, data, total_row):
 	data.append([
 		invoice.posting_date,
 		invoice.customer,
@@ -38,9 +49,14 @@ def process_invoice(invoice, data):
 		invoice.consoleerp_customer_discount_total,
 		invoice.grand_total
 	])
-	return data
+	total_row['total'] += invoice.consoleerp_customer_total
+	total_row['vat_amount'] += invoice.total_taxes_and_charges
+	total_row['amount'] += invoice.consoleerp_customer_grand_total
+	total_row['rebate'] += invoice.consoleerp_customer_discount_total
+	total_row['net_value'] += invoice.grand_total
+	return data, total_row
 	
-def process_invoice_items(invoice, data):
+def process_invoice_items(invoice, data, total_row):
 	month = invoice.posting_date.strftime("%b")
 	for item in get_invoice_items(invoice):
 		vat_amount = get_item_tax(invoice, item)
@@ -67,8 +83,18 @@ def process_invoice_items(invoice, data):
 			profit,
 			profit / item.amount * 100
 		])
-	
-	return data
+		total_row['qty'] += item.qty
+		total_row['unit_price'] += item.consoleerp_customer_rate
+		total_row['total'] += item.consoleerp_original_amt
+		total_row['vat_amount'] += vat_amount
+		total_row['amount'] += item.consoleerp_original_amt + vat_amount
+		total_row['rebate'] += rebate_value
+		total_row['net_value'] += item.amount
+		total_row['valuation_rate'] += valuation_rate
+		total_row['total_valuation'] += valuation_rate * item.qty
+		total_row['profit'] += profit
+		
+	return data, total_row
 
 def get_columns(filters):
 	if filters.detailed_report == 1:
