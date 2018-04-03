@@ -152,7 +152,7 @@ def get_invoices(filters):
 	if filters.customer:
 		_filters["customer"] = filters.customer;
 	print(_filters)
-	return frappe.get_all("Sales Invoice", fields=["*"], filters=_filters)
+	return frappe.get_all("Sales Invoice", fields=["*"], filters=_filters, order_by="posting_date, name")
 
 def get_invoice_items(invoice):
 	return frappe.get_all("Sales Invoice Item", fields=["*"], filters={"parent": invoice.name})
