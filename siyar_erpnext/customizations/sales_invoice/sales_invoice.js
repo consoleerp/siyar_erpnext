@@ -101,8 +101,8 @@ frappe.ui.form.on('Sales Invoice', {
 					return e.fieldname == "consoleerp_customer_rate";
 				})[0].read_only = 1;
 				
-				// if its not local or is sales return, return
-				if (!frm.doc.__islocal || frm.doc.is_return)
+				// if its not local or is sales return or is amended, return
+				if (!frm.doc.__islocal || frm.doc.is_return || frm.doc.amended_from)
 				{
 					manual_setValue = false;
 					return;
