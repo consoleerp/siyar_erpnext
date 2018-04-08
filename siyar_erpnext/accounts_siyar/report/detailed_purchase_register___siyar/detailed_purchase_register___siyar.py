@@ -16,6 +16,9 @@ def validate_filers(filters):
 	
 	if not filters.to_date:
 		frappe.throw("To Date is mandatory")
+		
+	if not filters.detailed_report and filters.item_code:
+		frappe.throw("Item Code filter is valid only in detailed report")
 
 def get_data(filters):
 	data = []
@@ -23,7 +26,7 @@ def get_data(filters):
 	total_row = get_total_template_row(filters)
 	for invoice in invoices:
 		if filters.detailed_report == 1:
-			data, total_row = process_invoice_items(invoice, data, total_row)
+			data, total_row = process_invoice_items(invoice, data, total_row, filters)
 		else:
 			data, total_row = process_invoice(invoice, data, total_row)
 			
@@ -52,9 +55,9 @@ def process_invoice(invoice, data, total_row):
 	total_row['amount'] += invoice.grand_total
 	return data, total_row
 	
-def process_invoice_items(invoice, data, total_row):
+def process_invoice_items(invoice, data, total_row, filters):
 	month = invoice.posting_date.strftime("%b")
-	for item in get_invoice_items(invoice):
+	for item in get_invoice_items(invoice, filters):
 		vat_amount = get_item_tax(invoice, item)
 		data.append([
 			invoice.posting_date,
@@ -122,5 +125,8 @@ def get_invoices(filters):
 	print(_filters)
 	return frappe.get_all("Purchase Invoice", fields=["*"], filters=_filters, order_by="posting_date, name")
 
-def get_invoice_items(invoice):
-	return frappe.get_all("Purchase Invoice Item", fields=["*"], filters={"parent": invoice.name})
+def get_invoice_items(invoice, filters):
+	_filters = {"parent": invoice.name}
+	if filters.item_code:
+		_filters["item_code"] = filters.item_code
+	return frappe.get_all("Purchase Invoice Item", fields=["*"], filters=_filters)

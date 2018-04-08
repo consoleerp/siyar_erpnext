@@ -45,6 +45,12 @@ frappe.query_reports["Detailed Sales Register - Siyar"] = {
 			"fieldname":"detailed_report",
 			"label": __("Detailed Report"),
 			"fieldtype": "Check"
+		},
+		{
+			"fieldname":"item_code",
+			"label": __("Item"),
+			"fieldtype": "Link",
+			"options": "Item"
 		}
 	]
 }
