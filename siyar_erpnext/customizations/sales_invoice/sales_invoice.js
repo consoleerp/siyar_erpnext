@@ -76,8 +76,35 @@ frappe.ui.form.on('Sales Invoice', {
 				'Rename'
 				)
 			});
+			
+			
+			// On clicking force rebate, it will reset all items price to price list rate
+			frm.add_custom_button('Force Rebate', function() {
+				frm.events.calculate_rebate(frm, ignore_checks=true);
+			});
 		}
+		
+		frm.events.calculate_rebate(frm);
+		
+		if (frm.doc.docstatus == 1) {
+			cur_frm.add_custom_button(__(frm.doc.siyar_status === "Received from Customer" ? "Set as not Received" : "Receive Invoice"), function() {
+				frappe.call({
+					method: "frappe.client.set_value",
+					args: {
+						doctype: "Sales Invoice",
+						name: frm.doc.name,
+						fieldname: "siyar_status",
+						value: frm.doc.siyar_status === "Received from Customer" ? "To Receive" : "Received from Customer"
+					},
+					callback: function(r) {
+						frm.reload_doc();
+					}
+				});
+			});
+		}
+	},
 	
+	calculate_rebate: function(frm, ignore_checks = false) {
 		frappe.after_ajax(function() {
 
 			// if reference from Sales Order is present, this is a rebated sale..
@@ -102,11 +129,12 @@ frappe.ui.form.on('Sales Invoice', {
 				})[0].read_only = 1;
 				
 				// if its not local or is sales return or is amended, return
-				if (!frm.doc.__islocal || frm.doc.is_return || frm.doc.amended_from)
+				if ((!frm.doc.__islocal || frm.doc.is_return || frm.doc.amended_from) && !ignore_checks)
 				{
 					manual_setValue = false;
 					return;
 				}
+				
 				
 				// show customer total
 				// cur_frm.fields_dict["consoleerp_customer_total"].df.hidden = 0;
@@ -117,6 +145,9 @@ frappe.ui.form.on('Sales Invoice', {
 				// foreach items, copy current rate to customer rate and apply discount on actual rate
 				$.each(frm.doc.items, function(i, item_doc){								
 					
+					// reset rate to PriceList rate
+					item_doc.rate = item_doc.price_list_rate;
+					
 					// adding item_code in as associative array
 					items.push(item_doc.item_code);
 					item_doc.consoleerp_customer_rate = item_doc.rate;
@@ -124,6 +155,7 @@ frappe.ui.form.on('Sales Invoice', {
 
 				frappe.call({
 					"method" : "siyar_erpnext.api.get_customer_item_disc_percent",
+					freeze: true,
 					args : {
 						customer : frm.doc.customer,
 						items : items							
@@ -159,23 +191,6 @@ frappe.ui.form.on('Sales Invoice', {
 				// cur_frm.fields_dict["consoleerp_customer_total"].refresh();
 			}
 		});
-
-		if (frm.doc.docstatus == 1) {
-			cur_frm.add_custom_button(__(frm.doc.siyar_status === "Received from Customer" ? "Set as not Received" : "Receive Invoice"), function() {
-				frappe.call({
-					method: "frappe.client.set_value",
-					args: {
-						doctype: "Sales Invoice",
-						name: frm.doc.name,
-						fieldname: "siyar_status",
-						value: frm.doc.siyar_status === "Received from Customer" ? "To Receive" : "Received from Customer"
-					},
-					callback: function(r) {
-						frm.reload_doc();
-					}
-				});
-			});
-		}
 	},
 	
 	validate: function(frm) {
