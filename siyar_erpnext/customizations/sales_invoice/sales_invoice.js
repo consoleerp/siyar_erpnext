@@ -80,6 +80,12 @@ frappe.ui.form.on('Sales Invoice', {
 			
 			// On clicking force rebate, it will reset all items price to price list rate
 			frm.add_custom_button('Force Rebate', function() {
+				
+				$.each(frm.doc.items, function(i, item_doc){								
+					// reset rate to customer rate
+					item_doc.rate = item_doc.consoleerp_customer_rate;
+				});
+				
 				frm.events.calculate_rebate(frm, ignore_checks=true);
 			});
 		}
@@ -144,9 +150,6 @@ frappe.ui.form.on('Sales Invoice', {
 				// onload
 				// foreach items, copy current rate to customer rate and apply discount on actual rate
 				$.each(frm.doc.items, function(i, item_doc){								
-					
-					// reset rate to PriceList rate
-					item_doc.rate = item_doc.price_list_rate;
 					
 					// adding item_code in as associative array
 					items.push(item_doc.item_code);
