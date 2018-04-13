@@ -1,5 +1,51 @@
-import frappe
+import frappe, json
 from frappe.utils import flt, cint, cstr
+from frappe.model.meta import get_field_precision
+
+@frappe.whitelist()
+def get_customer_item_disc_percent(customer, items):	
+	
+	customer_group = frappe.get_value(doctype="Customer", filters={"name" : customer}, fieldname="customer_group")
+	
+	print items
+	items = json.loads(items)
+	
+	def get_ref_rate(item_obj):
+		# so_detail
+		dt = ''
+		dn = ''
+		if item_obj['so_detail']:
+			dt = 'Sales Order Item'
+			dn = item_obj['so_detail']
+		elif item_obj['dn_detail']:
+			dt = 'Delivery Note Item'
+			dn = item_obj['dn_detail']
+		else:
+			frappe.throw("No previous doc found")
+		
+		return frappe.get_value(doctype=dt, filters={"name": dn}, fieldname="rate")
+	
+	values = []
+	for item_obj in items:
+		item_group = frappe.get_value(doctype="Item", filters={"name" : item_obj['item_code']}, fieldname="item_group")
+		if not item_group:
+			continue	
+	
+		item_group_doc = frappe.get_doc("Item Group", item_group)
+		discount_row = item_group_doc.get("consoleerp_custgroup_discount", {"customer_group" : customer_group})
+		
+		# so_detail
+		
+		ref_rate = get_ref_rate(item_obj)
+		disc_percent = discount_row[0].disc_percent if (discount_row and discount_row[0]) else 0
+		
+		rate_precision = get_field_precision(frappe.get_meta("Sales Invoice Item").get_field("rate"))
+		row_details = {
+			'rate': flt(ref_rate - ref_rate * (flt(disc_percent) / 100), rate_precision), 'disc_percent': disc_percent, 'customer_rate': ref_rate
+		}
+		values.append(row_details)
+	
+	return values
 
 def validate(self, method):		
 

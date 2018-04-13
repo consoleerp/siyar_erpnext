@@ -152,12 +152,11 @@ frappe.ui.form.on('Sales Invoice', {
 				$.each(frm.doc.items, function(i, item_doc){								
 					
 					// adding item_code in as associative array
-					items.push(item_doc.item_code);
-					item_doc.consoleerp_customer_rate = item_doc.rate;
+					items.push({item_code: item_doc.item_code, so_detail: item_doc.so_detail, dn_detail: item_doc.dn_detail});
 				});
 
 				frappe.call({
-					"method" : "siyar_erpnext.api.get_customer_item_disc_percent",
+					"method" : "siyar_erpnext.customizations.sales_invoice.get_customer_item_disc_percent",
 					freeze: true,
 					args : {
 						customer : frm.doc.customer,
@@ -166,12 +165,11 @@ frappe.ui.form.on('Sales Invoice', {
 					callback : function(r) {
 						console.log(r.message);
 						$.each(frm.doc.items, function(i, item_doc){
-								item_doc.consoleerp_customer_disc_percent = r.message[i];
-								item_doc.rate = item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100;
-								item_doc.consoleerp_original_amt = item_doc.qty * item_doc.consoleerp_customer_rate;
-								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_customer_disc_percent", r.message[i]);	
-								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "rate", item_doc.consoleerp_customer_rate * (100 - item_doc.consoleerp_customer_disc_percent) / 100);	
-								// frappe.model.set_value("Sales Invoice Item", item_doc.name, "consoleerp_original_amt", item_doc.qty * item_doc.consoleerp_customer_rate);																			
+							let obj = r.message[i];
+							item_doc.consoleerp_customer_disc_percent = obj.disc_percent;
+							item_doc.rate = obj.rate;
+							item_doc.consoleerp_customer_rate = obj.customer_rate;
+							item_doc.consoleerp_original_amt = item_doc.qty * item_doc.consoleerp_customer_rate;																			
 						});	
 						frm.refresh_fields();
 						frm.events.calculate_customer_total(frm);
