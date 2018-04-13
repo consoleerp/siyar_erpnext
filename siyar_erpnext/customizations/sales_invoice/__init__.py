@@ -27,6 +27,8 @@ def get_customer_item_disc_percent(customer, items):
 	
 	values = []
 	for item_obj in items:
+		if not 'so_detail' in item_obj or not 'dn_detail' in item_obj:
+			continue
 		item_group = frappe.get_value(doctype="Item", filters={"name" : item_obj['item_code']}, fieldname="item_group")
 		if not item_group:
 			continue	
