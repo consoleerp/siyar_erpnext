@@ -46,6 +46,22 @@ frappe.ui.form.on('Sales Invoice', {
 	},
 	refresh: function(frm) {
 		
+		if (frm.doc.docstatus == 1) {
+			frm.add_custom_button('Fix Rebate', () => {
+				frappe.call({
+					method: "siyar_erpnext.rebatesfix.fix_invoice",
+					freeze:true,
+					args: {
+						sinv: cur_frm.doc.name
+					},
+					callback: (r) => {
+						if (!r.exc)
+							location.reload()
+					}
+				})
+			});
+		}
+		
 		// RENAME DOC
 		if (frm.doc.docstatus == 0) {
 			frm.add_custom_button('Rename', function() {
