@@ -25,9 +25,9 @@ def get_customer_item_disc_percent(customer, items):
 		
 		return frappe.get_value(doctype=dt, filters={"name": dn}, fieldname="rate")
 	
-	values = []
+	values = {}
 	for item_obj in items:
-		if not 'so_detail' in item_obj or not 'dn_detail' in item_obj:
+		if not 'so_detail' in item_obj and not 'dn_detail' in item_obj:
 			continue
 		item_group = frappe.get_value(doctype="Item", filters={"name" : item_obj['item_code']}, fieldname="item_group")
 		if not item_group:
@@ -43,10 +43,10 @@ def get_customer_item_disc_percent(customer, items):
 		
 		rate_precision = get_field_precision(frappe.get_meta("Sales Invoice Item").get_field("rate"))
 		row_details = {
-			'rate': flt(ref_rate - ref_rate * (flt(disc_percent) / 100), rate_precision), 'disc_percent': disc_percent, 'customer_rate': ref_rate
+			'idx': item_obj['idx'], 'rate': flt(ref_rate - ref_rate * (flt(disc_percent) / 100), rate_precision), 'disc_percent': disc_percent, 'customer_rate': ref_rate
 		}
-		values.append(row_details)
-	
+		values[item_obj['idx']] = row_details
+	print(json.dumps(values))
 	return values
 
 def validate(self, method):		

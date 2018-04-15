@@ -152,7 +152,8 @@ frappe.ui.form.on('Sales Invoice', {
 				$.each(frm.doc.items, function(i, item_doc){								
 					
 					// adding item_code in as associative array
-					items.push({item_code: item_doc.item_code, so_detail: item_doc.so_detail, dn_detail: item_doc.dn_detail});
+					// idx for to cross check
+					items.push({idx: item_doc.idx, item_code: item_doc.item_code, so_detail: item_doc.so_detail, dn_detail: item_doc.dn_detail});
 				});
 
 				frappe.call({
@@ -164,16 +165,20 @@ frappe.ui.form.on('Sales Invoice', {
 					},
 					callback : function(r) {
 						console.log(r.message);
-						$.each(frm.doc.items, function(i, item_doc){
-							let obj = r.message[i];
-							item_doc.consoleerp_customer_disc_percent = obj.disc_percent;
-							item_doc.rate = obj.rate;
-							item_doc.consoleerp_customer_rate = obj.customer_rate;
-							item_doc.consoleerp_original_amt = item_doc.qty * item_doc.consoleerp_customer_rate;																			
-						});	
-						frm.refresh_fields();
-						frm.events.calculate_customer_total(frm);
-						manual_setValue = false;
+						if (r.message) {
+							$.each(frm.doc.items, function(i, item_doc){
+								let obj = r.message[item_doc.idx];
+								item_doc.consoleerp_customer_disc_percent = obj.disc_percent;
+								item_doc.rate = obj.rate;
+								item_doc.consoleerp_customer_rate = obj.customer_rate;
+								item_doc.consoleerp_original_amt = item_doc.qty * item_doc.consoleerp_customer_rate;																			
+							});	
+							frm.refresh_fields();
+							frm.events.calculate_customer_total(frm);
+							manual_setValue = false;
+						} else {
+							frappe.throw("Rebate Error, try force rebate. If this repeats, message Fahim :D")
+						}
 					}
 				});
 						
