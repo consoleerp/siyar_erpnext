@@ -29,8 +29,9 @@ def get_data(filters):
 			data, total_row = process_invoice_items(invoice, data, total_row, filters)
 		else:
 			data, total_row = process_invoice(invoice, data, total_row)
-			
-	data.append(get_total_row(filters, data, total_row));
+	
+	if len(data) > 0:
+		data.append(get_total_row(filters, data, total_row));
 	return data
 
 def get_total_template_row(filters):
