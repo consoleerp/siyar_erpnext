@@ -85,7 +85,7 @@ def process_invoice_items(invoice, data, total_row, filters):
 			valuation_rate,
 			valuation_rate * item.qty,
 			profit,
-			profit / item.amount * 100
+			profit / item.amount * 100 if item.amount > 0 else 0
 		])
 		total_row['qty'] += item.qty
 		total_row['unit_price'] += item.consoleerp_customer_rate
