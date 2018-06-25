@@ -1,6 +1,7 @@
 import frappe, json
 from frappe.utils import flt, cint, cstr
 from frappe.model.meta import get_field_precision
+from siyar_erpnext.customizations.employee_cash_invoice import check_mode_of_payment as employee_cash_invoice
 
 @frappe.whitelist()
 def get_customer_item_disc_percent(customer, items):	
@@ -81,9 +82,11 @@ def before_submit(self, method):
 
 
 def on_submit(self, method):
+	employee_cash_invoice(self)
 	validate_with_delivery_note(self)
 
 def on_cancel(self, method):
+	employee_cash_invoice(self)
 	validate_with_delivery_note(self)
 
 def calculate_customer_taxes_and_totals(self):
@@ -143,6 +146,7 @@ def _get_tax_rate(self, tax, item_tax_map):
 			return flt(item_tax_map.get(tax.account_head), self.precision("rate", tax))
 		else:
 			return tax.rate
+
 
 def validate_with_delivery_note(self):
 	# We are only doing this:

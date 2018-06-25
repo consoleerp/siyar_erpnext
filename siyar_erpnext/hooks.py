@@ -93,6 +93,10 @@ doctype_js = {
 # }
 
 doc_events = {
+	"Payment Entry": {
+		"on_submit": "siyar_erpnext.customizations.employee_cash_invoice.check_mode_of_payment",
+		"on_cancel": "siyar_erpnext.customizations.employee_cash_invoice.check_mode_of_payment"
+	},
 	"Sales Invoice" : {
 		"validate" : "siyar_erpnext.customizations.sales_invoice.validate",
 		"before_submit": "siyar_erpnext.customizations.sales_invoice.before_submit",
@@ -142,6 +146,8 @@ doc_events = {
 
 fixtures = [
 	{"dt" : "Custom Field", "filters" : [["name", "in", [
+		"Mode of Payment-deposit_to_employee",
+	
 		# Customer Group Custom Credit days
 		"Customer Group-consoleerp_credit_days",
 		"Customer Group-consoleerp_credit_months",
