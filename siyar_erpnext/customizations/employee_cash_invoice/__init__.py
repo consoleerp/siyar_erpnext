@@ -64,6 +64,6 @@ def check_mode_of_payment(doc, method):
 			}, employee_account_currency)
 		)
 	
-		from erpnext.accounts.general_ledger import make_gl_entries
-		make_gl_entries(gl_entries, cancel=(doc.docstatus == 2),
-		update_outstanding='Yes', merge_entries=False)
+	from erpnext.accounts.general_ledger import make_gl_entries
+	make_gl_entries(gl_entries, cancel=(doc.docstatus == 2),
+	update_outstanding='Yes', merge_entries=False)
