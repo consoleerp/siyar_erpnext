@@ -82,11 +82,11 @@ def before_submit(self, method):
 
 
 def on_submit(self, method):
-	employee_cash_invoice(self)
+	employee_cash_invoice(self, method)
 	validate_with_delivery_note(self)
 
 def on_cancel(self, method):
-	employee_cash_invoice(self)
+	employee_cash_invoice(self, method)
 	validate_with_delivery_note(self)
 
 def calculate_customer_taxes_and_totals(self):
