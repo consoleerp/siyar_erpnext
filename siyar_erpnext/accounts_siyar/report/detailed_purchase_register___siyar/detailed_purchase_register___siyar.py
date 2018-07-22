@@ -117,7 +117,7 @@ def get_item_tax(invoice, item):
 
 def get_invoices(filters):
 	# real weird
-	_filters = {"posting_date": ("between", [add_to_date(filters.from_date, days=-1, as_string=True), add_to_date(filters.to_date, days=-1, as_string=True)]), "docstatus": 1}
+	_filters = {"posting_date": ("between", [filters.from_date, filters.to_date]), "docstatus": 1}
 	# _filters = {"posting_date": ("between", [filters.from_date, filters.to_date]), "docstatus": 1}
 	if filters.purchase_invoice:
 		_filters["name"] = filters.purchase_invoice
