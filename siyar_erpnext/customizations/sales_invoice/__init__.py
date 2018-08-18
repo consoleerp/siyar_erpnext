@@ -153,7 +153,9 @@ def validate_with_delivery_note(self):
 	# Make SLEs for changed qtys
 	# Make the GL wrt abv
 	# make_sl_entries & make_gl_entries handles cancellation
-
+	
+	# not stable
+	return
 	if self.update_stock == 1:
 		# do nothing if updating stock
 		return
