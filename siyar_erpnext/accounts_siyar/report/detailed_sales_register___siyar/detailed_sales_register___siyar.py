@@ -145,6 +145,8 @@ def get_valuation_rate(invoice, item):
 
 def get_item_tax(invoice, item):
 	# consoleerp_customer_total - without tax
+	if not invoice.total_taxes_and_charges:
+		return 0
 	return item.consoleerp_original_amt / invoice.consoleerp_customer_total * invoice.total_taxes_and_charges
 
 def get_invoices(filters):
