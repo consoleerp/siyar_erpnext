@@ -15,10 +15,10 @@ def get_customer_item_disc_percent(customer, items):
 		# so_detail
 		dt = ''
 		dn = ''
-		if item_obj['so_detail']:
+		if 'so_detail' in item_obj:
 			dt = 'Sales Order Item'
 			dn = item_obj['so_detail']
-		elif item_obj['dn_detail']:
+		elif 'dn_detail' in item_obj:
 			dt = 'Delivery Note Item'
 			dn = item_obj['dn_detail']
 		else:
